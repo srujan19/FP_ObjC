@@ -40,6 +40,7 @@
     
     if ([fetchedPasscode isEqualToString:[self encryptSha1:self.passcode.text]]) {
         HomeViewController *home = (HomeViewController *)[[self storyboard] instantiateViewControllerWithIdentifier:@"HomeVC"];
+        [self presentViewController:home animated:YES completion:nil];
     }
 }
 
