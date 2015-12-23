@@ -6,14 +6,17 @@
 //  Copyright © 2015 Srujan Simha Adicharla. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "LoginViewController.h"
+#import "SetLockViewController.h"
 
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
+ 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -26,7 +29,39 @@
                                UITextAttributeTextShadowOffset     :  [NSValue valueWithUIOffset:UIOffsetZero]};
     [[UINavigationBar appearance] setTitleTextAttributes:settings];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
+    if ([self checkPasscode] == YES) {
+        LoginViewController *login = (LoginViewController *)[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        [self setUpRootViewController:application initialVC:login];
+    } else {
+        SetLockViewController *setLock = (SetLockViewController *) [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetupLock"];
+        [self setUpRootViewController:application initialVC:setLock];
+    }
+    
     return YES;
+}
+
+-(BOOL) checkPasscode {
+    //1
+    AppDelegate *appDel = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = appDel.managedObjectContext;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"MasterPasscode" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *info in fetchedObjects) {
+        NSLog(@"passcode: %@", [info valueForKey:@"passcode"]);
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(void) setUpRootViewController: (UIApplication *)application initialVC:(UIViewController *) initialViewController {
+    self.window.rootViewController = initialViewController;
+    [[self window] makeKeyAndVisible];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

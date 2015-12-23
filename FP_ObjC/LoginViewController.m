@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "LoginViewController.h"
-#import "HomeViewController.h"
+#import "SWRevealViewController.h"
 #import "AppDelegate.h"
 #import "SetLockViewController.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <UITextFieldDelegate> {
+    
+}
 
 @end
 
@@ -23,48 +25,94 @@
 @synthesize loginView;
 @synthesize passcode;
 @synthesize  fetchedPasscode;
+@synthesize authenticate;
+@synthesize errorLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([self checkPasscode] == NO) {
-        SetLockViewController *setLock = (SetLockViewController *)[[self storyboard] instantiateViewControllerWithIdentifier:@"SetupLock"];
-        [self presentViewController:setLock animated:YES completion:nil];
-    }
+    [self initialViewSettings];
+}
+
+- (void) initialViewSettings {
+    UITapGestureRecognizer *tapView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    tapView.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapView];
+    [self.loginView addGestureRecognizer:tapView];
+    
+    self.loginView.layer.cornerRadius = 10.0;
+    self.loginView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.loginView.layer.shadowRadius = 10.0;
+    self.loginView.layer.shadowOpacity = 10.0;
+    self.loginView.layer.shadowOffset = CGSizeZero;
+    self.loginView.layer.masksToBounds = false;
+    
+    self.authenticate.layer.cornerRadius = 5.0;
+    self.authenticate.layer.borderColor = [UIColor darkGrayColor].CGColor;
+    self.passcode.layer.sublayerTransform = CATransform3DMakeTranslation(5, 0, 0);
+    self.passcode.delegate = self;
+    
+    CATransition *transition = nil;
+    transition = [CATransition animation];
+    transition.duration = 1;//kAnimationDuration
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionPush;
+    transition.subtype =kCATransitionFromTop ;
+    transition.delegate = self;
+    [loginView.layer addAnimation:transition forKey:nil];
+    
+    [UIView animateWithDuration:1.0 delay:1.0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        
+    } completion:nil];
 }
 
 -(IBAction) showPasscode:(UISwitch *)sender {
-    
+    if (self.onOffSwitch.on == YES) {
+        self.passcode.secureTextEntry = NO;
+    } else {
+        self.passcode.secureTextEntry = YES;
+    }
 }
 
 -(IBAction)login:(UIButton *)sender {
-    
-    if ([fetchedPasscode isEqualToString:[self encryptSha1:self.passcode.text]]) {
-        HomeViewController *home = (HomeViewController *)[[self storyboard] instantiateViewControllerWithIdentifier:@"HomeVC"];
+    NSLog(@" fetchedPasscode %@", fetchedPasscode);
+    if ([self checkPasscode] == YES) {
+        SWRevealViewController *home = (SWRevealViewController *)[[self storyboard] instantiateViewControllerWithIdentifier:@"SWRevealVC"];
         [self presentViewController:home animated:YES completion:nil];
+    } else {
+        self.errorLabel.text = [NSString stringWithFormat:@"Incorrect Password!"];
     }
 }
 
 -(BOOL) checkPasscode {
-    BOOL status = NO;
     //1
     AppDelegate *appDel = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = appDel.managedObjectContext;
-    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
-    [fetchReq setEntity:[NSEntityDescription entityForName:@"MastePasscode" inManagedObjectContext:context]];
-    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"MasterPasscode" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
     NSError *error = nil;
-    NSArray *result = [context executeFetchRequest:fetchReq error:&error];
-    if (result != nil) {
-        fetchedPasscode = [result valueForKey:@"passcode"];
-        status = YES;
-    } else {
-        status = NO;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *info in fetchedObjects) {
+        fetchedPasscode = [info valueForKey:@"passcode"];
     }
     
-    return status;
+    if ([fetchedPasscode isEqualToString:self.passcode.text]) {
+        return YES;
+    }
+    return NO;
 }
 
+- (void) hideKeyboard {
+    [self.passcode resignFirstResponder];
+}
 
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if (textField.returnKeyType == UIReturnKeyDone) {
+        [self.passcode resignFirstResponder];
+    }
+    return YES;
+}
 
 - (NSString *)encryptSha1:(NSString *)str {
     const char *cStr = [str UTF8String];

@@ -10,8 +10,8 @@
 		4001724E1C270F6B00F76815 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4001724D1C270F6B00F76815 /* HomeViewController.m */; };
 		400172511C270FCD00F76815 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 400172501C270FCD00F76815 /* LoginViewController.m */; };
 		400172551C27106C00F76815 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 400172541C27106C00F76815 /* SWRevealViewController.m */; };
-		400172581C27112300F76815 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 400172571C27112300F76815 /* MenuTableViewController.m */; };
 		4040F69D1C2392240087DF86 /* SetLockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4040F69C1C2392240087DF86 /* SetLockViewController.m */; };
+		40527BE01C2A59F8006535D7 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40527BDF1C2A59F8006535D7 /* MenuViewController.m */; };
 		40B131051C22279600A9CD9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B131041C22279600A9CD9D /* main.m */; };
 		40B131081C22279600A9CD9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B131071C22279600A9CD9D /* AppDelegate.m */; };
 		40B1310B1C22279600A9CD9D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B1310A1C22279600A9CD9D /* ViewController.m */; };
@@ -48,10 +48,10 @@
 		400172501C270FCD00F76815 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		400172531C27106C00F76815 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		400172541C27106C00F76815 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		400172561C27112300F76815 /* MenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewController.h; sourceTree = "<group>"; };
-		400172571C27112300F76815 /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
 		4040F69B1C2392230087DF86 /* SetLockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetLockViewController.h; sourceTree = "<group>"; };
 		4040F69C1C2392240087DF86 /* SetLockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetLockViewController.m; sourceTree = "<group>"; };
+		40527BDE1C2A59F8006535D7 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		40527BDF1C2A59F8006535D7 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		40B131001C22279600A9CD9D /* FP_ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FP_ObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40B131041C22279600A9CD9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		40B131061C22279600A9CD9D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 			children = (
 				4001724C1C270F6B00F76815 /* HomeViewController.h */,
 				4001724D1C270F6B00F76815 /* HomeViewController.m */,
-				400172561C27112300F76815 /* MenuTableViewController.h */,
-				400172571C27112300F76815 /* MenuTableViewController.m */,
+				40527BDE1C2A59F8006535D7 /* MenuViewController.h */,
+				40527BDF1C2A59F8006535D7 /* MenuViewController.m */,
 			);
 			name = MainControllers;
 			sourceTree = "<group>";
@@ -409,13 +409,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				40B1310B1C22279600A9CD9D /* ViewController.m in Sources */,
+				40527BE01C2A59F8006535D7 /* MenuViewController.m in Sources */,
 				4040F69D1C2392240087DF86 /* SetLockViewController.m in Sources */,
 				40B131081C22279600A9CD9D /* AppDelegate.m in Sources */,
 				400172551C27106C00F76815 /* SWRevealViewController.m in Sources */,
 				40B131051C22279600A9CD9D /* main.m in Sources */,
 				400172511C270FCD00F76815 /* LoginViewController.m in Sources */,
 				40B131111C22279600A9CD9D /* FP_ObjC.xcdatamodeld in Sources */,
-				400172581C27112300F76815 /* MenuTableViewController.m in Sources */,
 				4001724E1C270F6B00F76815 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,6 +559,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FP_ObjC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.inkers.forgetpasswords.FP-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -571,6 +572,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FP_ObjC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.inkers.forgetpasswords.FP-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

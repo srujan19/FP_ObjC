@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "SetLockViewController.h"
+#import "LoginViewController.h"
 #import "AppDelegate.h"
 #import <VENTouchLock/VENTouchLock.h>
 
@@ -74,13 +75,23 @@
     AppDelegate *appDel = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = appDel.managedObjectContext;
     NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"MasterPasscode" inManagedObjectContext:context];
-    [entity setValue:[self encryptSha1:self.passcode.text] forKey:@"passcode"];
-    [entity setValue:[self encryptSha1:self.hint.text] forKey:@"hint"];
+    [entity setValue:self.passcode.text forKey:@"passcode"];
+    [entity setValue:self.hint.text forKey:@"hint"];
     NSError *error = nil;
-    if ([context save:&error]) {
+    if (![context save:&error]) {
         NSLog(@"Can't Save! %@ %@", error, [error localizedDescription]);
+        if ([UIAlertController class])
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:@"There is an error in saving your password. Please close and re-open the app." preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alertController addAction:ok];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     } else {
-        
+        LoginViewController *login = (LoginViewController *) [[self storyboard] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        [self presentViewController:login animated:YES completion:nil];
     }
 }
 
@@ -115,6 +126,7 @@
 - (void) hideKeyboard {
     [self.passcode resignFirstResponder];
     [self.hint resignFirstResponder];
+    [[self view] resignFirstResponder];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
