@@ -11,11 +11,10 @@
 #import "SetLockViewController.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "NSString-Hashes.h"
 #import <VENTouchLock/VENTouchLock.h>
 
 @interface SetLockViewController () <UITextFieldDelegate>
-
-- (NSString *) encryptSha1: (NSString *) str;
 
 @end
 
@@ -75,8 +74,8 @@
     AppDelegate *appDel = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = appDel.managedObjectContext;
     NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"MasterPasscode" inManagedObjectContext:context];
-    [entity setValue:self.passcode.text forKey:@"passcode"];
-    [entity setValue:self.hint.text forKey:@"hint"];
+    [entity setValue:[self.passcode.text sha1] forKey:@"passcode"];
+    [entity setValue:[self.hint.text sha1] forKey:@"hint"];
     NSError *error = nil;
     if (![context save:&error]) {
         NSLog(@"Can't Save! %@ %@", error, [error localizedDescription]);
@@ -96,7 +95,6 @@
 }
 
 - (IBAction)numberLock:(UIButton *) sender {
-    
 }
 
 - (IBAction)showPasscode:(UISwitch *) sender {
@@ -105,22 +103,6 @@
     } else {
         self.passcode.secureTextEntry = YES;
     }
-}
-
-- (NSString *)encryptSha1:(NSString *)str {
-    const char *cStr = [str UTF8String];
-    unsigned char result[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1(cStr, strlen(cStr), result);
-    NSString *s = [NSString  stringWithFormat:
-                   @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-                   result[0], result[1], result[2], result[3], result[4],
-                   result[5], result[6], result[7],
-                   result[8], result[9], result[10], result[11], result[12],
-                   result[13], result[14], result[15],
-                   result[16], result[17], result[18], result[19]
-                   ];
-    
-    return s;
 }
 
 - (void) hideKeyboard {

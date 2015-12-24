@@ -28,7 +28,8 @@
 }
 
 -(IBAction) menu:(UIBarButtonItem *)sender {
-    [self.revealViewController revealToggleAnimated:YES];
+    SWRevealViewController *revealViewController2 = self.revealViewController;
+    [revealViewController2 revealToggleAnimated:YES];
 }
 
 

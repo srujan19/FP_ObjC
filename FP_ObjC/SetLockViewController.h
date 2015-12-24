@@ -21,5 +21,4 @@
 -(IBAction) createLocker:(UIButton *) sender;
 -(IBAction) numberLock:(UIButton *) sender;
 -(IBAction) showPasscode:(UISwitch *) sender;
-- (NSString *) encryptSha1: (NSString *) str;
 @end

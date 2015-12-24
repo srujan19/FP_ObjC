@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "SetLockViewController.h"
+#import "NSString-Hashes.h"
 
 @interface AppDelegate ()
 
@@ -20,10 +21,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:90/255.0 green: 130/255.0 blue: 190.0/255.0 alpha: 1]];
     NSDictionary *settings = @{
-                               UITextAttributeFont                 :  [UIFont fontWithName:@"AvenirNext-Regular" size:18.0],
+                               UITextAttributeFont                 :  [UIFont fontWithName:@"AvenirNext-Regular" size:15.0],
                                UITextAttributeTextColor            :  [UIColor whiteColor],
                                UITextAttributeTextShadowColor      :  [UIColor clearColor],
                                UITextAttributeTextShadowOffset     :  [NSValue valueWithUIOffset:UIOffsetZero]};
